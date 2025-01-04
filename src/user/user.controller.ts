@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateBuyerDto } from './dto/create-buyer.dto';
@@ -36,6 +37,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @HttpCode(204)
   remove(@Param('id') id: number) {
     return this.userService.remove(id);
   }
