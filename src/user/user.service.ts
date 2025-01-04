@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateBuyerDto } from './dto/create-buyer.dto';
 import { UpdateBuyerDto } from './dto/update-buyer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,6 +17,12 @@ export class UserService {
   ) {}
 
   async create(createBuyerDto: CreateBuyerDto) {
+    if (await this.userRepository.existsBy({ email: createBuyerDto.email })) {
+      throw new BadRequestException(
+        `User with email ${createBuyerDto.email} already exists`,
+      );
+    }
+
     const newBuyer = new Buyer();
 
     newBuyer.userType = createBuyerDto.userType;
