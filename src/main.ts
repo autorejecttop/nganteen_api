@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {
   FastifyAdapter,
@@ -6,6 +6,7 @@ import {
 } from '@nestjs/platform-fastify';
 import fastifyCsrfProtection from '@fastify/csrf-protection';
 import fastifyHelmet from '@fastify/helmet';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -31,6 +32,19 @@ async function bootstrap() {
   // to only trusted IP addresses.
   // Read more: https://docs.nestjs.com/security/cors
   app.enableCors();
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
+
+  // This enables serialization of returned objects.
+  // It is used for excluding passwords and other sensitive data
+  // from being returned.
+  // Read more: https://docs.nestjs.com/techniques/serialization#exclude-properties
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   await app.listen(process.env.PORT ?? 3000);
 }

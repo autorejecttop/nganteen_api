@@ -5,6 +5,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         synchronize: configService.get('NODE_ENV') === 'dev',
       }),
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [
