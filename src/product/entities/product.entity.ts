@@ -31,7 +31,7 @@ export class Product {
   })
   description: string;
 
-  // TODO: Many to one Seller
+  // TODO: Many to one User entity
   @Column()
   seller: string;
 }
