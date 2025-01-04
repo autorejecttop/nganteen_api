@@ -56,8 +56,28 @@ export class UserService {
     return user;
   }
 
-  update(id: number, updateBuyerDto: UpdateBuyerDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateBuyerDto: UpdateBuyerDto) {
+    const existingUser = await this.findOne(id);
+
+    if (
+      updateBuyerDto.email &&
+      existingUser.email !== updateBuyerDto.email &&
+      (await this.userRepository.existsBy({ email: updateBuyerDto.email }))
+    ) {
+      throw new BadRequestException(
+        `User with email ${updateBuyerDto.email} already exists`,
+      );
+    }
+
+    const { password, ...updatedBuyerData } = updateBuyerDto;
+    Object.assign(existingUser, updatedBuyerData);
+
+    existingUser.passwordHash = await bcrypt.hash(
+      password,
+      +this.configService.get('SALT_ROUNDS'),
+    );
+
+    return this.userRepository.save(existingUser);
   }
 
   async remove(id: number) {
