@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,6 +22,14 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     const { password, ...newUserData } = createUserDto;
 
+    const isEmailUsed = await this.userRepository.existsBy({
+      email: createUserDto.email,
+    });
+
+    if (isEmailUsed) {
+      throw new BadRequestException('Email already in use');
+    }
+
     const user = this.userRepository.create({
       passwordHash: await bcrypt.hash(
         password,
@@ -30,18 +42,35 @@ export class UserService {
   }
 
   findAll() {
-    return `This action returns all user`;
+    return this.userRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
+
+    const { password, ...newUserData } = updateUserDto;
+
+    Object.assign(user, {
+      passwordHash: password
+        ? await bcrypt.hash(password, +this.configService.get('SALT_ROUNDS'))
+        : user.passwordHash,
+      ...newUserData,
+    });
+
+    return this.userRepository.save(user);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    await this.userRepository.delete(id);
   }
 }

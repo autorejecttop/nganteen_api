@@ -26,7 +26,14 @@ export class User {
   })
   type: UserType;
 
-  // TODO: Cart for buyers
-  // TODO: nim for buyers
-  // TODO: Orders for sellers
+  @Column({
+    nullable: true,
+  })
+  nim?: string;
+
+  // TODO: One-to-Many orders, both for buyers and sellers
+  @Column({
+    nullable: true,
+  })
+  orders?: string;
 }
