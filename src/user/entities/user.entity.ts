@@ -1,6 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserType } from '../enums/user-type.enum';
 import { Exclude } from 'class-transformer';
+import { Order } from 'src/order/entities/order.entity';
+import { Product } from 'src/product/entities/product.entity';
 
 @Entity()
 export class User {
@@ -31,9 +33,12 @@ export class User {
   })
   nim?: string;
 
-  // TODO: One-to-Many orders, both for buyers and sellers
-  @Column({
-    nullable: true,
-  })
-  orders?: string;
+  @OneToMany(() => Product, (product) => product.seller)
+  products?: Product[];
+
+  @OneToMany(() => Order, (order) => order.buyer)
+  buyerOrders?: Order[];
+
+  @OneToMany(() => Order, (order) => order.seller)
+  sellerOrders?: Order[];
 }

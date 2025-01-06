@@ -1,5 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ProductType } from '../enums/product-type.enum';
+import { User } from 'src/user/entities/user.entity';
+import { Order } from 'src/order/entities/order.entity';
 
 @Entity()
 export class Product {
@@ -18,7 +26,7 @@ export class Product {
     nullable: true,
     type: 'float',
   })
-  rating: number;
+  rating?: number;
 
   @Column({
     type: 'enum',
@@ -31,7 +39,9 @@ export class Product {
   })
   description: string;
 
-  // TODO: Many to one User entity
-  @Column()
-  seller: string;
+  @ManyToOne(() => User, (user) => user.products)
+  seller: User;
+
+  @OneToMany(() => Order, (order) => order.product)
+  orders?: Order[];
 }

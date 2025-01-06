@@ -1,5 +1,6 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ProductType } from '../enums/product-type.enum';
+import { User } from 'src/user/entities/user.entity';
 
 export class CreateProductDto {
   @IsString()
@@ -18,7 +19,6 @@ export class CreateProductDto {
   @IsString()
   description: string;
 
-  // TODO: Change to user entity
-  @IsString()
-  seller: string;
+  @IsNumber()
+  seller: User;
 }
