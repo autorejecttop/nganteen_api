@@ -8,13 +8,22 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.buyerOrders)
+  @ManyToOne(() => User, (user) => user.buyerOrders, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   buyer: User;
 
-  @ManyToOne(() => User, (user) => user.sellerOrders)
+  @ManyToOne(() => User, (user) => user.sellerOrders, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   seller: User;
 
-  @ManyToOne(() => Product, (product) => product.orders)
+  @ManyToOne(() => Product, (product) => product.orders, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   product: Product;
 
   @Column()

@@ -33,12 +33,18 @@ export class User {
   })
   nim?: string;
 
-  @OneToMany(() => Product, (product) => product.seller)
+  @OneToMany(() => Product, (product) => product.seller, {
+    cascade: true,
+  })
   products?: Product[];
 
-  @OneToMany(() => Order, (order) => order.buyer)
+  @OneToMany(() => Order, (order) => order.buyer, {
+    cascade: true,
+  })
   buyerOrders?: Order[];
 
-  @OneToMany(() => Order, (order) => order.seller)
+  @OneToMany(() => Order, (order) => order.seller, {
+    cascade: true,
+  })
   sellerOrders?: Order[];
 }

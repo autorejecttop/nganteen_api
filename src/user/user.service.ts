@@ -38,15 +38,28 @@ export class UserService {
       ...newUserData,
     });
 
-    return this.userRepository.save(user);
+    const createdUser = await this.userRepository.save(user);
+    return this.userRepository.findOne({
+      where: { id: createdUser.id },
+      relations: { products: true, buyerOrders: true, sellerOrders: true },
+    });
   }
 
   findAll() {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      relations: { products: true, buyerOrders: true, sellerOrders: true },
+    });
   }
 
   async findOne(id: number) {
-    const user = await this.userRepository.findOneBy({ id });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: {
+        products: true,
+        buyerOrders: true,
+        sellerOrders: true,
+      },
+    });
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -67,7 +80,12 @@ export class UserService {
       ...newUserData,
     });
 
-    return this.userRepository.save(user);
+    await this.userRepository.save(user);
+
+    return this.userRepository.findOne({
+      where: { id },
+      relations: { products: true, buyerOrders: true, sellerOrders: true },
+    });
   }
 
   async remove(id: number) {

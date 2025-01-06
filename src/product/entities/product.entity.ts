@@ -39,9 +39,14 @@ export class Product {
   })
   description: string;
 
-  @ManyToOne(() => User, (user) => user.products)
+  @ManyToOne(() => User, (user) => user.products, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   seller: User;
 
-  @OneToMany(() => Order, (order) => order.product)
+  @OneToMany(() => Order, (order) => order.product, {
+    cascade: true,
+  })
   orders?: Order[];
 }
