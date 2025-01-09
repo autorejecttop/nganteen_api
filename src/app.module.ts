@@ -8,6 +8,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { OrderModule } from './order/order.module';
+import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/auth.guard';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -47,9 +50,11 @@ import { OrderModule } from './order/order.module';
         synchronize: configService.get('NODE_ENV') === 'dev',
       }),
     }),
+    JwtModule,
     ProductModule,
     UserModule,
     OrderModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
@@ -58,6 +63,10 @@ import { OrderModule } from './order/order.module';
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
     },
   ],
 })
