@@ -11,6 +11,7 @@ import { OrderModule } from './order/order.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './auth/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
+import { FileUploadModule } from './file-upload/file-upload.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { JwtModule } from '@nestjs/jwt';
     UserModule,
     OrderModule,
     AuthModule,
+    FileUploadModule,
   ],
   controllers: [AppController],
   providers: [

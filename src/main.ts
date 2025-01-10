@@ -7,6 +7,7 @@ import {
 import fastifyCsrfProtection from '@fastify/csrf-protection';
 import fastifyHelmet from '@fastify/helmet';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import fastifyMultipart from '@fastify/multipart';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -46,6 +47,8 @@ async function bootstrap() {
   // from being returned.
   // Read more: https://docs.nestjs.com/techniques/serialization#exclude-properties
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+
+  app.register(fastifyMultipart);
 
   await app.listen(process.env.PORT ?? 3000);
 }
