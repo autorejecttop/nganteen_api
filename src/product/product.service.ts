@@ -51,7 +51,7 @@ export class ProductService {
     await this.productRepository.delete(id);
   }
 
-  async uploadPhoto(id: number, file: MultipartFile) {
+  async uploadAndUpdatePhoto(id: number, file: MultipartFile) {
     const product = await this.findOne(id);
 
     const productPhoto = await this.fileUploadService.create(file);

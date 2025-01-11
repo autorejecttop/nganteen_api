@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   Req,
+  Put,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -44,8 +45,9 @@ export class ProductController {
     return this.productService.remove(id);
   }
 
+  @Put(':id/photo')
   @Post(':id/photo')
   async uploadPhoto(@Param('id') id: number, @Req() req: FastifyRequest) {
-    return this.productService.uploadPhoto(id, await req.file());
+    return this.productService.uploadAndUpdatePhoto(id, await req.file());
   }
 }

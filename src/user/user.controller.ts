@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   Req,
+  Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -46,8 +47,9 @@ export class UserController {
     return this.userService.remove(id);
   }
 
+  @Put(':id/photo')
   @Post(':id/photo')
   async uploadPhoto(@Param('id') id: number, @Req() req: FastifyRequest) {
-    return this.userService.uploadPhoto(id, await req.file());
+    return this.userService.uploadAndUpdatePhoto(id, await req.file());
   }
 }

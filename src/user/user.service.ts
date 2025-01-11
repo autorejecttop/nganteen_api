@@ -98,7 +98,7 @@ export class UserService {
     await this.userRepository.delete(id);
   }
 
-  async uploadPhoto(id: number, file: MultipartFile) {
+  async uploadAndUpdatePhoto(id: number, file: MultipartFile) {
     const user = await this.findOne(id);
 
     const userPhoto = await this.fileUploadService.create(file);
