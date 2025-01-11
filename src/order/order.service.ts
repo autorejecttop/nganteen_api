@@ -26,15 +26,12 @@ export class OrderService {
   }
 
   findAll() {
-    return this.orderRepository.find({
-      relations: { buyer: true, seller: true, product: true },
-    });
+    return this.orderRepository.find({ relations: ['buyer', 'seller'] });
   }
 
   async findOne(id: number) {
     const order = await this.orderRepository.findOne({
       where: { id },
-      relations: { buyer: true, seller: true, product: true },
     });
 
     if (!order) {
@@ -65,11 +62,6 @@ export class OrderService {
 
     return this.orderRepository.findOne({
       where: { id },
-      relations: {
-        buyer: true,
-        seller: true,
-        product: true,
-      },
     });
   }
 

@@ -41,24 +41,16 @@ export class UserService {
     const createdUser = await this.userRepository.save(user);
     return this.userRepository.findOne({
       where: { id: createdUser.id },
-      relations: { products: true, buyerOrders: true, sellerOrders: true },
     });
   }
 
   findAll() {
-    return this.userRepository.find({
-      relations: { products: true, buyerOrders: true, sellerOrders: true },
-    });
+    return this.userRepository.find({});
   }
 
   async findOne(id: number) {
     const user = await this.userRepository.findOne({
       where: { id },
-      relations: {
-        products: true,
-        buyerOrders: true,
-        sellerOrders: true,
-      },
     });
 
     if (!user) {
@@ -71,11 +63,6 @@ export class UserService {
   async findByEmail(email: string) {
     const user = await this.userRepository.findOne({
       where: { email },
-      relations: {
-        products: true,
-        buyerOrders: true,
-        sellerOrders: true,
-      },
     });
 
     if (!user) {
@@ -101,7 +88,6 @@ export class UserService {
 
     return this.userRepository.findOne({
       where: { id },
-      relations: { products: true, buyerOrders: true, sellerOrders: true },
     });
   }
 

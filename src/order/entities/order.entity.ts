@@ -23,6 +23,7 @@ export class Order {
   @ManyToOne(() => Product, (product) => product.orders, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
+    eager: true,
   })
   product: Product;
 
