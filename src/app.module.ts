@@ -12,6 +12,8 @@ import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './auth/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { FileUploadModule } from './file-upload/file-upload.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -50,6 +52,15 @@ import { FileUploadModule } from './file-upload/file-upload.module';
         autoLoadEntities: true,
         synchronize: configService.get('NODE_ENV') === 'dev',
       }),
+    }),
+    ServeStaticModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => [
+        {
+          rootPath: join(__dirname, '..', configService.get('FILE_UPLOAD_DIR')),
+          serveRoot: `/${configService.get('FILE_UPLOAD_DIR')}`,
+        },
+      ],
     }),
     JwtModule,
     ProductModule,
