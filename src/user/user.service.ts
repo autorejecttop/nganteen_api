@@ -10,6 +10,8 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
+import { MultipartFile } from '@fastify/multipart';
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 
 @Injectable()
 export class UserService {
@@ -17,6 +19,7 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly configService: ConfigService,
+    private readonly fileUploadService: FileUploadService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -93,5 +96,15 @@ export class UserService {
 
   async remove(id: number) {
     await this.userRepository.delete(id);
+  }
+
+  async uploadPhoto(id: number, file: MultipartFile) {
+    const user = await this.findOne(id);
+
+    const userPhoto = await this.fileUploadService.create(file);
+
+    user.photo = userPhoto;
+
+    return this.userRepository.save(user);
   }
 }

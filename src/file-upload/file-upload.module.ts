@@ -8,5 +8,6 @@ import { Photo } from './entities/photo.entity';
   imports: [TypeOrmModule.forFeature([Photo])],
   providers: [FileUploadService],
   controllers: [FileUploadController],
+  exports: [FileUploadService],
 })
 export class FileUploadModule {}
