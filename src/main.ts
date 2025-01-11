@@ -48,6 +48,12 @@ async function bootstrap() {
   // Read more: https://docs.nestjs.com/techniques/serialization#exclude-properties
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
+  // This enables file upload using multipart/form-data
+  // in Fastify. The docs for NestJS file upload only
+  // have examples for Express so it might be harder to use.
+  // Possibility of changing to a different library or
+  // to use Express.
+  // Read more: https://github.com/fastify/fastify-multipart
   app.register(fastifyMultipart);
 
   await app.listen(process.env.PORT ?? 3000);
