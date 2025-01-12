@@ -11,7 +11,7 @@ import { OrderModule } from './order/order.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './auth/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
-import { FileUploadModule } from './photo/photo.module';
+import { PhotoModule } from './photo/photo.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
@@ -67,7 +67,7 @@ import { join } from 'path';
     UserModule,
     OrderModule,
     AuthModule,
-    FileUploadModule,
+    PhotoModule,
   ],
   controllers: [AppController],
   providers: [

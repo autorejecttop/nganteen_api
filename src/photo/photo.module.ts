@@ -8,4 +8,4 @@ import { Photo } from './entities/photo.entity';
   providers: [PhotoService],
   exports: [PhotoService],
 })
-export class FileUploadModule {}
+export class PhotoModule {}
