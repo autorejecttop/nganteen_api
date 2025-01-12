@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { MultipartFile } from '@fastify/multipart';
-import { FileUploadService } from 'src/file-upload/file-upload.service';
+import { FileUploadService } from '../../src/file-upload/file-upload.service';
 
 @Injectable()
 export class ProductService {

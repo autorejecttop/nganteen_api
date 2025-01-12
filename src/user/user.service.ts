@@ -11,7 +11,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { MultipartFile } from '@fastify/multipart';
-import { FileUploadService } from 'src/file-upload/file-upload.service';
+import { FileUploadService } from '../../src/file-upload/file-upload.service';
 
 @Injectable()
 export class UserService {

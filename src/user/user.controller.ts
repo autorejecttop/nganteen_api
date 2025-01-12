@@ -13,7 +13,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Public } from 'src/auth/auth.decorator';
+import { Public } from '../../src/auth/auth.decorator';
 import { FastifyRequest } from 'fastify';
 
 @Controller('user')
