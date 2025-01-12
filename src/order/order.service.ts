@@ -32,6 +32,7 @@ export class OrderService {
   async findOne(id: number) {
     const order = await this.orderRepository.findOne({
       where: { id },
+      relations: ['buyer', 'seller'],
     });
 
     if (!order) {
@@ -44,8 +45,12 @@ export class OrderService {
   async update(id: number, updateOrderDto: UpdateOrderDto) {
     const order = await this.findOne(id);
 
-    if (updateOrderDto.buyer === updateOrderDto.seller) {
-      throw new BadRequestException('Buyer and seller cannot be the same');
+    console.log(order);
+
+    if (updateOrderDto.seller || updateOrderDto.buyer) {
+      if (updateOrderDto.buyer === updateOrderDto.seller) {
+        throw new BadRequestException('Buyer and seller cannot be the same');
+      }
     }
 
     Object.assign(order, updateOrderDto);
