@@ -11,7 +11,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { MultipartFile } from '@fastify/multipart';
-import { FileUploadService } from 'src/file-upload/file-upload.service';
+import { PhotoService } from 'src/photo/photo.service';
 
 @Injectable()
 export class UserService {
@@ -19,7 +19,7 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly configService: ConfigService,
-    private readonly fileUploadService: FileUploadService,
+    private readonly photoService: PhotoService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -98,12 +98,25 @@ export class UserService {
     await this.userRepository.delete(id);
   }
 
-  async uploadAndUpdatePhoto(id: number, file: MultipartFile) {
+  async uploadPhoto(id: number, file: MultipartFile) {
     const user = await this.findOne(id);
 
-    const userPhoto = await this.fileUploadService.create(file);
+    const userPhoto = await this.photoService.create(file);
 
     user.photo = userPhoto;
+
+    return this.userRepository.save(user);
+  }
+
+  async updatePhoto(id: number, file: MultipartFile) {
+    const user = await this.findOne(id);
+
+    if (!user.photo) {
+      throw new NotFoundException('Photo not found');
+    }
+
+    const photo = await this.photoService.update(user.photo.id, file);
+    user.photo = photo;
 
     return this.userRepository.save(user);
   }

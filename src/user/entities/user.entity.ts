@@ -10,7 +10,7 @@ import { UserType } from '../enums/user-type.enum';
 import { Exclude } from 'class-transformer';
 import { Order } from 'src/order/entities/order.entity';
 import { Product } from 'src/product/entities/product.entity';
-import { Photo } from 'src/file-upload/entities/photo.entity';
+import { Photo } from 'src/photo/entities/photo.entity';
 
 @Entity()
 export class User {

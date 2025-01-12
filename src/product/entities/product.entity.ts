@@ -10,7 +10,7 @@ import {
 import { ProductType } from '../enums/product-type.enum';
 import { User } from 'src/user/entities/user.entity';
 import { Order } from 'src/order/entities/order.entity';
-import { Photo } from 'src/file-upload/entities/photo.entity';
+import { Photo } from 'src/photo/entities/photo.entity';
 
 @Entity()
 export class Product {
@@ -55,6 +55,7 @@ export class Product {
 
   @OneToOne(() => Photo, {
     eager: true,
+    cascade: true,
   })
   @JoinColumn()
   photo: Photo;

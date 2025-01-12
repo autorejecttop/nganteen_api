@@ -47,9 +47,13 @@ export class UserController {
     return this.userService.remove(id);
   }
 
-  @Put(':id/photo')
   @Post(':id/photo')
   async uploadPhoto(@Param('id') id: number, @Req() req: FastifyRequest) {
-    return this.userService.uploadAndUpdatePhoto(id, await req.file());
+    return this.userService.uploadPhoto(id, await req.file());
+  }
+
+  @Put(':id/photo')
+  async updatePhoto(@Param('id') id: number, @Req() req: FastifyRequest) {
+    return this.userService.updatePhoto(id, await req.file());
   }
 }

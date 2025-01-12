@@ -5,14 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { MultipartFile } from '@fastify/multipart';
-import { FileUploadService } from 'src/file-upload/file-upload.service';
+import { PhotoService } from 'src/photo/photo.service';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-    private readonly fileUploadService: FileUploadService,
+    private readonly photoService: PhotoService,
   ) {}
 
   create(createProductDto: CreateProductDto) {
@@ -51,12 +51,25 @@ export class ProductService {
     await this.productRepository.delete(id);
   }
 
-  async uploadAndUpdatePhoto(id: number, file: MultipartFile) {
+  async uploadPhoto(id: number, file: MultipartFile) {
     const product = await this.findOne(id);
 
-    const productPhoto = await this.fileUploadService.create(file);
+    const productPhoto = await this.photoService.create(file);
 
     product.photo = productPhoto;
+
+    return this.productRepository.save(product);
+  }
+
+  async updatePhoto(id: number, file: MultipartFile) {
+    const product = await this.findOne(id);
+
+    if (!product.photo) {
+      throw new NotFoundException('Photo not found');
+    }
+
+    const photo = await this.photoService.update(product.photo.id, file);
+    product.photo = photo;
 
     return this.productRepository.save(product);
   }

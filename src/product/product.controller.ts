@@ -45,9 +45,13 @@ export class ProductController {
     return this.productService.remove(id);
   }
 
-  @Put(':id/photo')
   @Post(':id/photo')
   async uploadPhoto(@Param('id') id: number, @Req() req: FastifyRequest) {
-    return this.productService.uploadAndUpdatePhoto(id, await req.file());
+    return this.productService.uploadPhoto(id, await req.file());
+  }
+
+  @Put(':id/photo')
+  async updatePhoto(@Param('id') id: number, @Req() req: FastifyRequest) {
+    return this.productService.updatePhoto(id, await req.file());
   }
 }
