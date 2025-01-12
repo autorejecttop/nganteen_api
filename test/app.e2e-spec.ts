@@ -59,7 +59,7 @@ describe('App', () => {
           method: 'POST',
           url: '/auth/login',
           payload: {
-            email: 'Franco_Paucek93@example.com',
+            email: 'Jeanie.Upton@example.com',
             password: '12345aA@',
           },
         })
